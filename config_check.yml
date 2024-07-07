@@ -1,0 +1,7 @@
+# for one device, can be given like this:
+    hosts:
+      - device: clab-tshoot-n-1 
+        username : admin
+        passwd: admin@123
+    tests:
+      - test_no_diff.yml 

@@ -1,9 +1,10 @@
 interfaces {
     ge-0/0/0 {
+        flexible-vlan-tagging;
         unit 0 {
             vlan-tags outer 5 inner 3;
             family inet {
-                address 100.64.1.1/30
+                address 100.64.1.1/30;
             }
         }
     }
