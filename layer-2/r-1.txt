@@ -1,0 +1,68 @@
+interfaces {
+    ge-0/0/0 {
+        encapsulation ethernet-bridge;
+        unit 0 {
+            family bridge {
+                filter {
+                    input FM-QNQ-V5-V3;
+                    output FM-QNQ-V5-V3;
+                }
+            }
+        }
+    }
+    ge-0/0/1 {
+        encapsulation ethernet-bridge;
+        unit 0 {
+            family bridge {
+                filter {
+                    input FM-QNQ-V5-V3;
+                    output FM-QNQ-V5-V3;
+                }
+            }
+        }
+    }
+}
+firewall {
+    family bridge {
+        filter FM-QNQ-V5-V3 {
+            interface-specific;
+            term OUTER-V5 {
+                from {
+                    flexible-match-mask {
+                        match-start layer-2;
+                        byte-offset 14;
+                        bit-length 32;
+                        prefix 0x5;
+                    }
+                }
+                then {
+                    count CNTR-V5;
+                    next term;
+                }
+            }
+            term INNER-V3 {
+                from {
+                    flexible-match-mask {
+                        match-start layer-2;
+                        byte-offset 18;
+                        bit-length 32;
+                        prefix 0x3;
+                    }
+                }
+                then {
+                    count CNTR-V3;
+                    accept;
+                }
+            }
+            term CATCH-ALL {
+                then accept;
+            }
+        }
+    }
+}
+bridge-domains {
+    circuit-a {
+        interface ge-0/0/0.0;
+        interface ge-0/0/1.0;
+    }
+}

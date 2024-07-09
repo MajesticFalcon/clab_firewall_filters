@@ -1,0 +1,10 @@
+test:
+  
+  - command: "ping 198.51.100.6 rapid count 1"
+  
+  - item:
+      xpath: //probe-results-summary
+      tests:
+        - is-equal: packet-loss,0
+          info:  "Success!"
+          err:  "Fail! IMPLEMENT THE PATCH"

@@ -1,0 +1,68 @@
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet {
+                address 198.51.100.1/30;
+                filter {
+                    input FF-INET-ICMP;
+                    output FF-INET-ICMP;
+                }
+            }
+        }
+    }
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 198.51.100.5/30;
+                filter {
+                    input FF-INET-ICMP;
+                    output FF-INET-ICMP;
+                }
+            }
+        }
+    }
+}
+
+firewall {
+    family inet {
+        filter FF-INET-ICMP {
+            interface-specific;
+            term INTERESTING-TRAFFIC-D1 {
+                from {
+                    source-address {
+                        198.51.100.2/32;
+                    }
+                    destination-address {
+                        198.51.100.6/32;
+                    }
+                    protocol icmp;
+                }
+                then {
+                    count COUNTER-CUSTOMERA-to-CUSTOMERB-FLOW-1;
+                    accept;
+                }
+            }
+            term INTERESTING-TRAFFIC-D2 {
+                from {
+                    source-address {
+                        198.51.100.6/32;
+                    }
+                    destination-address {
+                        198.51.100.2/32;
+                    }
+                    protocol icmp;
+                }
+                then {
+                    count COUNTER-CUSTOMERB-to-CUSTOMERA-FLOW-1;
+                    accept;
+                }
+            }
+            term CATCH-ALL {
+                then accept;
+            }
+        }
+    }
+}
+
+
+
