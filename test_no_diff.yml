@@ -1,6 +1,6 @@
 test:
   
-  - command: "ping 100.64.1.2 rapid count 1"
+  - command: "ping 198.51.100.6 rapid count 1"
   
   - item:
       xpath: //probe-results-summary
